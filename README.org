@@ -1,0 +1,117 @@
+* Introduction to CodeQL 
+  1. [ ] describe the system using diagrams as reference point, with details from
+     existing docs
+     - https://github.com/hohn/codeql-visual-guides/blob/master/codeql-system.drawio.pdf,
+       ~/work-gh/codeql-visual-guides/ 
+
+  2. Update https://github.com/hohn/codeql-cli-end-to-end
+     - [ ] Send setup instructions for windows / linux -- for the laptops, not
+       VMs or Docker.
+       - old:
+         https://github.com/advanced-security/codeql-workshops-staging/blob/master/java/workshop-java-mismatched-loop-condition.md#setup-instructions
+       - better:
+         https://github.com/ps-resources/codeql-partner-training/blob/39bc5e8d84a8f0dd1698d9cdcc59eed98fa691b9/preparation-materials/setup-instructions.md#codeql-workshop-preparation-instructions
+
+       - ~/local/codeql-operational-view/operational-view.pdf
+
+       - [ ] windows version -- to be written.
+
+     - [ ] Suggest variant analysis for log4j etc.
+     - [ ] Tools:
+       - octopuss deploy
+       - progit for package management -- anito.
+       - Actions for building
+     - [ ] 
+  3. https://github.com/hohn/codeql-workshop-sql-injection-java
+     - [ ] version for C#
+
+* CodeQL overview
+  - /Users/hohn/local/codeql-dataflow-sql-injection/CodeQL-workshop-overview-only.pdf
+
+  There are two identifyable tracks for codeql users: [[*CodeQL for Devops and Administrators][devops]] and [[*CodeQL for Query Writers][query writers]].
+  The first one focuses on setup, deployment, and query selection; the second on
+  query writing.  There is significant overlap; the [[*CodeQL CLI Setup][CodeQL CLI Setup]] is needed by
+  both. 
+
+* CodeQL CLI Setup
+  
+* Test Problem Setup
+** Hello World Sample
+  #+BEGIN_SRC sh 
+    # Install sdk
+    brew install --cask dotnet-sdk
+    dotnet --version
+
+    # Create template project
+    mkdir HelloWorld
+    cd HelloWorld
+    dotnet new console
+
+    # Compile template project
+    cd ~/work-gh/codeql-intro-csharp/HelloWorld/
+    dotnet build
+
+    # Run template project
+    dotnet run
+    # or
+    ./bin/Debug/net9.0/HelloWorld 
+
+  #+END_SRC
+
+** SQL Injection
+  #+BEGIN_SRC sh 
+    # Project Setup
+    cd ~/work-gh/codeql-intro-csharp/
+    dotnet new console -n SqliDemo
+    cd SqliDemo
+
+    dotnet add package Microsoft.Data.Sqlite
+
+    # Database Init
+    cd ~/work-gh/codeql-intro-csharp/SqliDemo
+    sqlite3 users.sqlite
+    CREATE TABLE users (id INTEGER, info TEXT);
+    .exit
+
+    # Build
+    cd ~/work-gh/codeql-intro-csharp/SqliDemo
+    dotnet build
+
+    # Run
+    dotnet run
+    First User
+
+    # Check db
+    echo '
+        SELECT * FROM users;
+    ' | sqlite3 users.sqlite 
+
+    # Add Johnny Droptable 
+    dotnet run
+    Johnny'); DROP TABLE users; --
+
+    # Check db
+    echo '
+        SELECT * FROM users;
+    ' | sqlite3 users.sqlite 
+    # Parse error near line 2: no such table: users
+  #+END_SRC
+
+
+* CodeQL VS Code Setup
+* CodeQL for Devops and Administrators
+  - https://docs.github.com/en/code-security/codeql-cli/codeql-cli-manual
+  - https://github.com/hohn/codeql-visual-guides/blob/master/codeql-system.drawio.pdf
+  - https://htmlpreview.github.io/?https://github.com/hohn/codeql-cli-end-to-end/blob/master/doc/readme.html
+  - https://github.com/hohn/codeql-workshop-sql-injection-java
+    + https://github.com/hohn/codeql-workshop-sql-injection-java/blob/master/src/README.org
+  - [[file:~/local/codeql-dataflow-II-cpp/README.org::*Prerequisites and setup instructions][Prerequisites and setup instructions]]
+  - picking queries via query suites
+    - /Users/hohn/local/codeql-workshops-staging/java/codeql-java-workshop-notes.md
+    - /Users/hohn/local/codeql-cli-end-to-end/doc/readme.md
+    - /Users/hohn/local/codeql-cli-end-to-end/sarif-cli/non-sarif-metadata/README.org
+
+* CodeQL for Query Writers
+  - https://github.com/hohn/codeql-workshop-sql-injection-java
+    + https://github.com/hohn/codeql-workshop-sql-injection-java/blob/master/session/README.org
+    
