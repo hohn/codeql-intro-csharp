@@ -168,6 +168,61 @@
      # Successfully created database at /Users/hohn/work-gh/codeql-intro-csharp/csharp-sqli-c89fbf8.
    #+END_SRC
 
+* TODO Run analysis using given script and database
+
+   The bash version
+   #+BEGIN_SRC sh
+     # The setup information from before
+     echo $DB
+     echo $SRCDIR
+
+     # To see the help
+     codeql database analyze -h
+
+     # Run a query
+     codeql database analyze                                 \
+            -v                                               \
+            --ram=14000                                      \
+            -j12                                             \
+            --rerun                                          \
+            --format=sarif-latest                            \
+            --output csharp-sqli.sarif                       \
+            --                                               \
+            $DB                                              \
+            $SRCDIR/FindFunction.ql
+
+     # optional: pretty-print
+     jq . < csharp-sqli.sarif | sponge csharp-sqli.sarif
+
+     # Examine the file in an editor
+     edit csharp-sqli.sarif
+   #+END_SRC
+
+   An example of using the sarif data is in the the jq script [[./sarif-summary.jq]].
+   When run against the sarif input via 
+   #+BEGIN_SRC sh
+     jq --raw-output --join-output  -f sarif-summary.jq < csharp-sqli.sarif > csharp-sqli.txt
+   #+END_SRC
+   it produces output in a form close to that of compiler error messages:
+   #+BEGIN_SRC text
+     query-id: message line 
+         Path
+            ...
+   #+END_SRC
+   Here, that is
+   #+BEGIN_SRC text
+     csharp/intro/FindFunction: Method found [0 more]
+             SqliDemo/Injectable.cs:8:
+     csharp/intro/FindFunction: Method found [0 more]
+             SqliDemo/Injectable.cs:17:
+     csharp/intro/FindFunction: Method found [0 more]
+             SqliDemo/Injectable.cs:22:
+     csharp/intro/FindFunction: Method found [0 more]
+             SqliDemo/Injectable.cs:47:
+
+   #+END_SRC
+
+   
 * TODO CodeQL VS Code Setup
 * TODO CodeQL for Devops and Administrators
   - https://docs.github.com/en/code-security/codeql-cli/codeql-cli-manual
