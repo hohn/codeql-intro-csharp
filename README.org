@@ -1,29 +1,10 @@
-* TODO Introduction to CodeQL 
-  1. [ ] describe the system using diagrams as reference point, with details from
-     existing docs
-     - https://github.com/hohn/codeql-visual-guides/blob/master/codeql-system.drawio.pdf,
-       ~/work-gh/codeql-visual-guides/ 
+* NEXT Introduction to CodeQL 
+  The full CodeQL and GHAS integration is shown [[https://htmlpreview.github.io/?https://github.com/hohn/codeql-intro-csharp/blob/mh-wip/codeql-system.drawio.svg][here]].  This document is intended
+  to support CodeQL workshops and presentations; it focuses on the the section
+  labeled 'CodeQL Running Sequence', in grids C2 through E5.
 
-  2. Update https://github.com/hohn/codeql-cli-end-to-end
-     - [ ] Send setup instructions for windows / linux -- for the laptops, not
-       VMs or Docker.
-       - old:
-         https://github.com/advanced-security/codeql-workshops-staging/blob/master/java/workshop-java-mismatched-loop-condition.md#setup-instructions
-       - better:
-         https://github.com/ps-resources/codeql-partner-training/blob/39bc5e8d84a8f0dd1698d9cdcc59eed98fa691b9/preparation-materials/setup-instructions.md#codeql-workshop-preparation-instructions
-
-       - ~/local/codeql-operational-view/operational-view.pdf
-
-       - [ ] windows version -- to be written.
-
-     - [ ] Suggest variant analysis for log4j etc.
-     - [ ] Tools:
-       - octopuss deploy
-       - progit for package management -- anito.
-       - Actions for building
-     - [ ] 
-  3. https://github.com/hohn/codeql-workshop-sql-injection-java
-     - [ ] version for C#
+  The section 'CodeQL query development sequence, using CI artifacts', in grids H0
+  through J4, is a subset without database building.
 
 * TODO CodeQL overview
   - /Users/hohn/local/codeql-dataflow-sql-injection/CodeQL-workshop-overview-only.pdf
@@ -147,8 +128,7 @@
     
   #+END_SRC
 
-
-* TODO Build CodeQL Database
+* NEXT Build CodeQL Database
    To get started, build the codeql database (adjust paths to your setup).  
 
    The bash version
@@ -168,7 +148,7 @@
      # Successfully created database at /Users/hohn/work-gh/codeql-intro-csharp/csharp-sqli-c89fbf8.
    #+END_SRC
 
-* TODO Run analysis using given script and database
+* NEXT Run analysis using given script and database
 
    The bash version
    #+BEGIN_SRC sh
@@ -221,7 +201,6 @@
              SqliDemo/Injectable.cs:47:
 
    #+END_SRC
-
    
 * TODO Optional: Multiple Builds
   #+BEGIN_SRC sh 
