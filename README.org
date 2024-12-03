@@ -223,6 +223,12 @@
    #+END_SRC
 
    
+* TODO Optional: Multiple Builds
+  #+BEGIN_SRC sh 
+    dotnet sln codeql-intro-csharp.sln list
+    dotnet build codeql-intro-csharp.sln
+  #+END_SRC
+
 * TODO CodeQL VS Code Setup
 * TODO CodeQL for Devops and Administrators
   - https://docs.github.com/en/code-security/codeql-cli/codeql-cli-manual

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloWorld", "HelloWorld\HelloWorld.csproj", "{CF5EBE3E-C110-4AFE-A855-8B1976FD6A93}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqliDemo", "SqliDemo\SqliDemo.csproj", "{B6AA7037-01B1-4E62-A601-DAEA3124A38A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF5EBE3E-C110-4AFE-A855-8B1976FD6A93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF5EBE3E-C110-4AFE-A855-8B1976FD6A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF5EBE3E-C110-4AFE-A855-8B1976FD6A93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF5EBE3E-C110-4AFE-A855-8B1976FD6A93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6AA7037-01B1-4E62-A601-DAEA3124A38A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6AA7037-01B1-4E62-A601-DAEA3124A38A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6AA7037-01B1-4E62-A601-DAEA3124A38A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6AA7037-01B1-4E62-A601-DAEA3124A38A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {809D2D7A-143C-4EF5-8C1A-30FD9973FD78}
+	EndGlobalSection
+EndGlobal
