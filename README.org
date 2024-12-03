@@ -1,69 +1,41 @@
-* TODO Introduction to CodeQL 
-  1. [ ] describe the system using diagrams as reference point, with details from
-     existing docs
-     - https://github.com/hohn/codeql-visual-guides/blob/master/codeql-system.drawio.pdf,
-       ~/work-gh/codeql-visual-guides/ 
+* Introduction to CodeQL 
+  The document [[./CodeQL-workshop-overview-only.pdf]] gives a very short overview
+  just to highlight the language capabilities.
 
-  2. Update https://github.com/hohn/codeql-cli-end-to-end
-     - [ ] Send setup instructions for windows / linux -- for the laptops, not
-       VMs or Docker.
-       - old:
-         https://github.com/advanced-security/codeql-workshops-staging/blob/master/java/workshop-java-mismatched-loop-condition.md#setup-instructions
-       - better:
-         https://github.com/ps-resources/codeql-partner-training/blob/39bc5e8d84a8f0dd1698d9cdcc59eed98fa691b9/preparation-materials/setup-instructions.md#codeql-workshop-preparation-instructions
-
-       - ~/local/codeql-operational-view/operational-view.pdf
-
-       - [ ] windows version -- to be written.
-
-     - [ ] Suggest variant analysis for log4j etc.
-     - [ ] Tools:
-       - octopuss deploy
-       - progit for package management -- anito.
-       - Actions for building
-     - [ ] 
-  3. https://github.com/hohn/codeql-workshop-sql-injection-java
-     - [ ] version for C#
-
-* TODO CodeQL overview
-  - /Users/hohn/local/codeql-dataflow-sql-injection/CodeQL-workshop-overview-only.pdf
+  This document is intended to support CodeQL workshops and presentations; it
+  focuses on the the section labeled 'CodeQL Running Sequence', in grids C2
+  through E5 of the full CodeQL and GHAS integration diagram shown [[https://htmlpreview.github.io/?https://github.com/hohn/codeql-intro-csharp/blob/mh-wip/codeql-system.drawio.svg][here]].  
+  The section 'CodeQL query development sequence, using CI artifacts', in grids H0
+  through J4, is a subset without database building.
 
   There are two identifyable tracks for codeql users: [[*CodeQL for Devops and Administrators][devops]] and [[*CodeQL for Query Writers][query writers]].
   The first one focuses on setup, deployment, and query selection; the second on
   query writing.  There is significant overlap; the [[*CodeQL CLI Setup][CodeQL CLI Setup]] is needed by
   both. 
 
-* TODO CodeQL CLI Setup
-  #+BEGIN_SRC text
+* CodeQL CLI Setup
+  After you have installed the CodeQL CLI proceed with setting up this repository:
+  #+BEGIN_SRC sh
+    # Clone repository
+    cd && mkdir -p work-gh && cd work-gh
+    git clone https://github.com/hohn/codeql-intro-csharp.git
+
+    # Initialize CodeQL
     cd ~/work-gh/codeql-intro-csharp
     codeql resolve  packs
     codeql pack install
   #+END_SRC
-  Using
-  #+BEGIN_SRC yaml
-    library: false
-    name: sample/csharp-sql-injection
-    version: 0.0.1
-    dependencies:
-      codeql/csharp-all: "*"
-  #+END_SRC
-  with
-  : codeql pack install
-  will install the packs matching this codeql version, then create
-  : codeql-pack.lock.yml
+
+  Using the file =qlpack.yml=, this will install the packs matching this codeql
+  version, then create =codeql-pack.lock.yml=
   which pins the version.
 
-* DONE Test Problem Setup
+* Setup Test Problems
 ** Hello World Sample
   #+BEGIN_SRC sh 
     # Install sdk
     brew install --cask dotnet-sdk
     dotnet --version
-
-    # Create template project
-    mkdir HelloWorld
-    cd HelloWorld
-    dotnet new console
 
     # Compile template project
     cd ~/work-gh/codeql-intro-csharp/HelloWorld/
@@ -75,16 +47,9 @@
     ./bin/Debug/net9.0/HelloWorld 
 
   #+END_SRC
-
-** SQL Injection
+** SQL Injection Sample
+   These are detailed steps.  The next section is higher level.
   #+BEGIN_SRC sh 
-    # Project Setup
-    cd ~/work-gh/codeql-intro-csharp/
-    dotnet new console -n SqliDemo
-    cd SqliDemo
-
-    dotnet add package Microsoft.Data.Sqlite
-
     # Database Init
     cd ~/work-gh/codeql-intro-csharp/SqliDemo
     sqlite3 users.sqlite
@@ -115,40 +80,7 @@
     # Parse error near line 2: no such table: users
   #+END_SRC
 
-* DONE SQL Injection Code Compilation and Sample Run
-  #+BEGIN_SRC sh
-    # All run in pwsh, typical prompt is
-    # PS /Users/hohn/work-gh/codeql-intro-csharp> 
-
-    # Build
-    cd $HOME/work-gh/codeql-intro-csharp
-    ./build.ps1
-
-    # Prepare db
-    ./admin.ps1 -r
-    ./admin.ps1 -c
-    ./admin.ps1 -s
-
-    # Add regular user interactively
-    ./build.ps1
-    ./SqliDemo/bin/Debug/net9.0/SqliDemo
-    hello user
-
-    # Check
-    ./admin.ps1 -s
-
-    # Add Johnny Droptable 
-    ./SqliDemo/bin/Debug/net9.0/SqliDemo
-    Johnny'); DROP TABLE users; --
-
-    # And the problem:
-    ./admin.ps1 -s
-    Parse error near line 1: no such table: users
-    
-  #+END_SRC
-
-
-* TODO Build CodeQL Database
+* NEXT Build CodeQL Database
    To get started, build the codeql database (adjust paths to your setup).  
 
    The bash version
@@ -168,7 +100,7 @@
      # Successfully created database at /Users/hohn/work-gh/codeql-intro-csharp/csharp-sqli-c89fbf8.
    #+END_SRC
 
-* TODO Run analysis using given script and database
+* NEXT Run analysis using given script and database
 
    The bash version
    #+BEGIN_SRC sh
@@ -221,28 +153,152 @@
              SqliDemo/Injectable.cs:47:
 
    #+END_SRC
-
    
+* CodeQL for Query Writers
+** SQL Injection Code Sample Run
+   #+BEGIN_SRC sh
+     # All run in pwsh, typical prompt is
+     # PS /Users/hohn/work-gh/codeql-intro-csharp> 
+
+     # Build
+     cd $HOME/work-gh/codeql-intro-csharp
+     ./build.ps1
+
+     # Prepare db
+     ./admin.ps1 -r
+     ./admin.ps1 -c
+     ./admin.ps1 -s
+
+     # Add regular user interactively
+     ./build.ps1
+     ./SqliDemo/bin/Debug/net9.0/SqliDemo
+     hello user
+
+     # Check
+     ./admin.ps1 -s
+
+     # Add Johnny Droptable 
+     ./SqliDemo/bin/Debug/net9.0/SqliDemo
+     Johnny'); DROP TABLE users; --
+
+     # And the problem:
+     ./admin.ps1 -s
+     Parse error near line 1: no such table: users
+
+   #+END_SRC
+
+** Identify the problem
+   =./SqliDemo/bin/Debug/net9.0/SqliDemo= is reading from =STDIN=, and writing to
+   a database; looking at the code in 
+   [[./SqliDemo/Injectable.cs]]
+   leads to
+   : Console.ReadLine()
+   for the read and 
+   : new SqliteCommand(query, connection)
+   for the write.
+
+   This problem is thus a dataflow or taintflow problem; in codeql terminology we have
+   - a /source/ at the =Console.ReadLine()=
+   - a /sink/ at the =new SqliteCommand(query, connection)=
+
+   We write codeql to identify these two, and then connect them via
+   - a /dataflow configuration/ -- for this problem, the more general /taintflow
+     configuration/. 
+   
+** Develop the query bottom-up
+   1. Identify the /source/ part of the 
+      : Console.ReadLine()?.Trim() ?? string.Empty;
+      expression, the =Console.ReadLine()= call.
+      Start from a =from..where..select=  then convert to a predicate or class.
+      The =from..where..select= is found in [[./SqlInjection-source.ql]]
+
+   2. Identify the /sink/ part of the
+      : var command = new SqliteCommand(query, connection))
+      expression, the =query= argument. 
+      Again start from =from..where..select=,
+      then convert to a predicate or class.
+      There is a subtlety here;
+      [[https://codeql.github.com/docs/codeql-language-guides/codeql-library-for-csharp/][the docs]] mention 'The Expr class represents all C# expressions in the
+      program. An expression is something producing a value such as a+b or new
+      List<int>().'   Use  the 'view AST' option from the results of step 1 to see
+      what is needed here.  It's not obvious.
+      The =from..where..select= is found in [[./SqlInjection-sink.ql]]
+
+   3. Fill in the /taintflow configuration/ boilerplate.  The [[https://codeql.github.com/docs/codeql-language-guides/analyzing-data-flow-in-csharp/#using-global-taint-tracking][documentation]]
+      explains in detail.  For this example, use
+      #+BEGIN_SRC java
+        module MyFlowConfiguration implements DataFlow::ConfigSig {
+          predicate isSource(DataFlow::Node source) {
+            ...
+          }
+
+          predicate isSink(DataFlow::Node sink) {
+            ...
+          }
+        }
+
+        module MyFlow = TaintTracking::Global<MyFlowConfiguration>;
+
+        from DataFlow::Node source, DataFlow::Node sink
+        where MyFlow::flow(source, sink)
+        select source, "Dataflow to $@.", sink, sink.toString()
+      #+END_SRC
+
+      Note the different CodeQL classes used here and their connections: =Node=,
+      =ExprNode=, =ParameterNode= are part of the DFG (data flow graph), =Expr= and
+      =Parameter= are part of the AST (abstract syntax tree).  Here, this means
+      using
+      : source.asExpr() = call
+      for the source and
+      : sink.asExpr() = queryArg
+      for the sink.
+
+   4. Also, note that we want the flow path.  So the query changes from
+      : * @kind problem
+      to
+      : * @kind path-problem
+      There are other changes, see [[./SqlInjection-flow-with-path.ql]]
+
+   5. Try this with dataflow instead of taintflow, and notice that there are no
+      results. 
+
+* NEXT CodeQL for Devops and Administrators
+** codeql packs
+   https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs
+
+   #+BEGIN_SRC sh 
+     # Create a pack 
+     cd ~/work-gh/codeql-intro-csharp
+     codeql pack create -- .
+     # output in 
+     ls .codeql/pack/workshop/csharp-sql-injection/0.0.1/
+
+     # Compile and Bundle
+     cd ~/work-gh/codeql-intro-csharp
+     codeql pack bundle                                      \
+            -o csharp-sql-injection-pack.tgz                 \
+            -- .
+
+     # Get help via 
+     codeql pack create -h
+     codeql pack publish -h
+
+   #+END_SRC
+   Note the warning for =FindFunction.ql=.  This will cause failures later in the
+   pipeline. 
+   #+BEGIN_SRC text
+     WARNING: The @id property should be a valid query identifier. (/Users/hohn/work-gh/codeql-intro-csharp/.codeql/pack/workshop/csharp-sql-injection/0.0.1/FindFunction.ql:1,1-7,4) 
+   #+END_SRC
+   At the end, note
+   #+BEGIN_SRC text
+     Query pack creation complete.
+     Contents directory: /Users/hohn/work-gh/codeql-intro-csharp/.codeql/pack/workshop/csharp-sql-injection/0.0.1
+   #+END_SRC
+
+
 * TODO Optional: Multiple Builds
   #+BEGIN_SRC sh 
     dotnet sln codeql-intro-csharp.sln list
     dotnet build codeql-intro-csharp.sln
   #+END_SRC
-
-* TODO CodeQL VS Code Setup
-* TODO CodeQL for Devops and Administrators
-  - https://docs.github.com/en/code-security/codeql-cli/codeql-cli-manual
-  - https://github.com/hohn/codeql-visual-guides/blob/master/codeql-system.drawio.pdf
-  - https://htmlpreview.github.io/?https://github.com/hohn/codeql-cli-end-to-end/blob/master/doc/readme.html
-  - https://github.com/hohn/codeql-workshop-sql-injection-java
-    + https://github.com/hohn/codeql-workshop-sql-injection-java/blob/master/src/README.org
-  - [[file:~/local/codeql-dataflow-II-cpp/README.org::*Prerequisites and setup instructions][Prerequisites and setup instructions]]
-  - picking queries via query suites
-    - /Users/hohn/local/codeql-workshops-staging/java/codeql-java-workshop-notes.md
-    - /Users/hohn/local/codeql-cli-end-to-end/doc/readme.md
-    - /Users/hohn/local/codeql-cli-end-to-end/sarif-cli/non-sarif-metadata/README.org
-
-* TODO CodeQL for Query Writers
-  - https://github.com/hohn/codeql-workshop-sql-injection-java
-    + https://github.com/hohn/codeql-workshop-sql-injection-java/blob/master/session/README.org
-    
+   
