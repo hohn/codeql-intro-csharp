@@ -19,29 +19,29 @@ class Injectable
         return Process.GetCurrentProcess().Id;
     }
 
-static void WriteInfo(int id, string info)
-{
-    const string connectionString = "Data Source=users.sqlite";
-    using (var connection = new SqliteConnection(connectionString))
+    static void WriteInfo(int id, string info)
     {
-        connection.Open();
-        // '{info.Replace("'", "''")}')" has no vulnerability
-        string query = $"INSERT INTO users VALUES ({id}, '{info}')";
-        Console.WriteLine($"Running query: {query}");
-
-        using (var command = new SqliteCommand(query, connection))
+        const string connectionString = "Data Source=users.sqlite";
+        using (var connection = new SqliteConnection(connectionString))
         {
-            try
+            connection.Open();
+            // '{info.Replace("'", "''")}')" has no vulnerability
+            string query = $"INSERT INTO users VALUES ({id}, '{info}')";
+            Console.WriteLine($"Running query: {query}");
+
+            using (var command = new SqliteCommand(query, connection))
             {
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error executing query: {ex.Message}");
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error executing query: {ex.Message}");
+                }
             }
         }
     }
-}
 
 
     static void Main()

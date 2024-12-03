@@ -1,0 +1,8 @@
+csharp/intro/FindFunction: Method found [0 more]
+        SqliDemo/Injectable.cs:8:
+csharp/intro/FindFunction: Method found [0 more]
+        SqliDemo/Injectable.cs:17:
+csharp/intro/FindFunction: Method found [0 more]
+        SqliDemo/Injectable.cs:22:
+csharp/intro/FindFunction: Method found [0 more]
+        SqliDemo/Injectable.cs:47:
