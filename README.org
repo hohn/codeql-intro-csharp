@@ -54,8 +54,6 @@
   which pins the version.
 
 * DONE Test Problem Setup
-  CLOSED: [2024-12-02 Mon 14:59]
-  - State "DONE"       from "NEXT"       [2024-12-02 Mon 14:59]
 ** Hello World Sample
   #+BEGIN_SRC sh 
     # Install sdk
@@ -117,10 +115,7 @@
     # Parse error near line 2: no such table: users
   #+END_SRC
 
-
 * DONE SQL Injection Code Compilation and Sample Run
-  CLOSED: [2024-12-03 Tue 10:52]
-  - State "DONE"       from "NEXT"       [2024-12-03 Tue 10:52]
   #+BEGIN_SRC sh
     # All run in pwsh, typical prompt is
     # PS /Users/hohn/work-gh/codeql-intro-csharp> 
@@ -153,8 +148,26 @@
   #+END_SRC
 
 
-* TODO Build database
-  : pwsh -File build.ps1
+* TODO Build CodeQL Database
+   To get started, build the codeql database (adjust paths to your setup).  
+
+   The bash version
+   #+BEGIN_SRC sh
+     # Build the db with source commit id.
+     cd $HOME/work-gh/codeql-intro-csharp
+     SRCDIR=$(pwd)
+     DB=$SRCDIR/csharp-sqli-$(cd $SRCDIR && git rev-parse --short HEAD)
+
+     echo "preparing database directory $DB"
+     test -d "$DB" && rm -fR "$DB"
+     mkdir -p "$DB"
+
+     # Run the build under codeql
+     cd $SRCDIR && codeql database create --language=csharp -s . -j 8 -v $DB --command='./build.sh'
+     # ...
+     # Successfully created database at /Users/hohn/work-gh/codeql-intro-csharp/csharp-sqli-c89fbf8.
+   #+END_SRC
+
 * TODO CodeQL VS Code Setup
 * TODO CodeQL for Devops and Administrators
   - https://docs.github.com/en/code-security/codeql-cli/codeql-cli-manual
