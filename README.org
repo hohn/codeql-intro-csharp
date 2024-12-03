@@ -1,4 +1,4 @@
-* Introduction to CodeQL 
+* TODO Introduction to CodeQL 
   1. [ ] describe the system using diagrams as reference point, with details from
      existing docs
      - https://github.com/hohn/codeql-visual-guides/blob/master/codeql-system.drawio.pdf,
@@ -25,7 +25,7 @@
   3. https://github.com/hohn/codeql-workshop-sql-injection-java
      - [ ] version for C#
 
-* CodeQL overview
+* TODO CodeQL overview
   - /Users/hohn/local/codeql-dataflow-sql-injection/CodeQL-workshop-overview-only.pdf
 
   There are two identifyable tracks for codeql users: [[*CodeQL for Devops and Administrators][devops]] and [[*CodeQL for Query Writers][query writers]].
@@ -33,9 +33,29 @@
   query writing.  There is significant overlap; the [[*CodeQL CLI Setup][CodeQL CLI Setup]] is needed by
   both. 
 
-* CodeQL CLI Setup
-  
-* Test Problem Setup
+* TODO CodeQL CLI Setup
+  #+BEGIN_SRC text
+    cd ~/work-gh/codeql-intro-csharp
+    codeql resolve  packs
+    codeql pack install
+  #+END_SRC
+  Using
+  #+BEGIN_SRC yaml
+    library: false
+    name: sample/csharp-sql-injection
+    version: 0.0.1
+    dependencies:
+      codeql/csharp-all: "*"
+  #+END_SRC
+  with
+  : codeql pack install
+  will install the packs matching this codeql version, then create
+  : codeql-pack.lock.yml
+  which pins the version.
+
+* DONE Test Problem Setup
+  CLOSED: [2024-12-02 Mon 14:59]
+  - State "DONE"       from "NEXT"       [2024-12-02 Mon 14:59]
 ** Hello World Sample
   #+BEGIN_SRC sh 
     # Install sdk
@@ -98,8 +118,45 @@
   #+END_SRC
 
 
-* CodeQL VS Code Setup
-* CodeQL for Devops and Administrators
+* DONE SQL Injection Code Compilation and Sample Run
+  CLOSED: [2024-12-03 Tue 10:52]
+  - State "DONE"       from "NEXT"       [2024-12-03 Tue 10:52]
+  #+BEGIN_SRC sh
+    # All run in pwsh, typical prompt is
+    # PS /Users/hohn/work-gh/codeql-intro-csharp> 
+
+    # Build
+    cd $HOME/work-gh/codeql-intro-csharp
+    ./build.ps1
+
+    # Prepare db
+    ./admin.ps1 -r
+    ./admin.ps1 -c
+    ./admin.ps1 -s
+
+    # Add regular user interactively
+    ./build.ps1
+    ./SqliDemo/bin/Debug/net9.0/SqliDemo
+    hello user
+
+    # Check
+    ./admin.ps1 -s
+
+    # Add Johnny Droptable 
+    ./SqliDemo/bin/Debug/net9.0/SqliDemo
+    Johnny'); DROP TABLE users; --
+
+    # And the problem:
+    ./admin.ps1 -s
+    Parse error near line 1: no such table: users
+    
+  #+END_SRC
+
+
+* TODO Build database
+  : pwsh -File build.ps1
+* TODO CodeQL VS Code Setup
+* TODO CodeQL for Devops and Administrators
   - https://docs.github.com/en/code-security/codeql-cli/codeql-cli-manual
   - https://github.com/hohn/codeql-visual-guides/blob/master/codeql-system.drawio.pdf
   - https://htmlpreview.github.io/?https://github.com/hohn/codeql-cli-end-to-end/blob/master/doc/readme.html
@@ -111,7 +168,7 @@
     - /Users/hohn/local/codeql-cli-end-to-end/doc/readme.md
     - /Users/hohn/local/codeql-cli-end-to-end/sarif-cli/non-sarif-metadata/README.org
 
-* CodeQL for Query Writers
+* TODO CodeQL for Query Writers
   - https://github.com/hohn/codeql-workshop-sql-injection-java
     + https://github.com/hohn/codeql-workshop-sql-injection-java/blob/master/session/README.org
     
