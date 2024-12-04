@@ -262,18 +262,7 @@
    5. Try this with dataflow instead of taintflow, and notice that there are no
       results. 
 
-* TODO CodeQL for Devops and Administrators
-  - https://docs.github.com/en/code-security/codeql-cli/codeql-cli-manual
-  - https://github.com/hohn/codeql-visual-guides/blob/master/codeql-system.drawio.pdf
-  - https://htmlpreview.github.io/?https://github.com/hohn/codeql-cli-end-to-end/blob/master/doc/readme.html
-  - https://github.com/hohn/codeql-workshop-sql-injection-java
-    + https://github.com/hohn/codeql-workshop-sql-injection-java/blob/master/src/README.org
-  - [[file:~/local/codeql-dataflow-II-cpp/README.org::*Prerequisites and setup instructions][Prerequisites and setup instructions]]
-
-  - [ ] picking queries 
-    - /Users/hohn/local/codeql-workshops-staging/java/codeql-java-workshop-notes.md
-    - /Users/hohn/local/codeql-cli-end-to-end/doc/readme.md
-    - /Users/hohn/local/codeql-cli-end-to-end/sarif-cli/non-sarif-metadata/README.org
+* NEXT CodeQL for Devops and Administrators
 ** codeql packs
    https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs
 
