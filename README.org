@@ -216,6 +216,78 @@
     - /Users/hohn/local/codeql-cli-end-to-end/sarif-cli/non-sarif-metadata/README.org
 
 * TODO CodeQL for Query Writers
-  - https://github.com/hohn/codeql-workshop-sql-injection-java
-    + https://github.com/hohn/codeql-workshop-sql-injection-java/blob/master/session/README.org
-    
+** Identify the problem
+   =./add-user= is reading from =STDIN=, and writing to a database; looking at the code in
+   [[./add-user.c]] leads to
+   : count = read(STDIN_FILENO, buf, BUFSIZE - 1);
+   for the read and 
+   : rc = sqlite3_exec(db, query, NULL, 0, &zErrMsg);
+   for the write.
+
+   This problem is thus a dataflow problem; in codeql terminology we have
+   - a /source/ at the =read(STDIN_FILENO, buf, BUFSIZE - 1);=
+   - a /sink/ at the =sqlite3_exec(db, query, NULL, 0, &zErrMsg);=
+
+   We write codeql to identify these two, and then connect them via
+   - a /dataflow configuration/ -- for this problem, the more general /taintflow
+     configuration/. 
+   
+** Develop the query bottom-up
+   1. Identify the /source/ part of the 
+      : Console.ReadLine()?.Trim() ?? string.Empty;
+      expression, the =Console.ReadLine()= call.
+      Start from a =from..where..select=  then convert to a predicate or class.
+      The =from..where..select= is found in [[./SqlInjection-source.ql]]
+
+   2. Identify the /sink/ part of the
+      : var command = new SqliteCommand(query, connection))
+      expression, the =query= argument. 
+      Again start from =from..where..select=,
+      then convert to a predicate or class.
+      There is a subtlety here;
+      [[https://codeql.github.com/docs/codeql-language-guides/codeql-library-for-csharp/][the docs]] mention 'The Expr class represents all C# expressions in the
+      program. An expression is something producing a value such as a+b or new
+      List<int>().'   Use  the 'view AST' option from the results of step 1 to see
+      what is needed here.  It's not obvious.
+      The =from..where..select= is found in [[./SqlInjection-sink.ql]]
+
+   3. Fill in the /taintflow configuration/ boilerplate.  The [[https://codeql.github.com/docs/codeql-language-guides/analyzing-data-flow-in-csharp/#using-global-taint-tracking][documentation]]
+      explains in detail.  For this example, use
+      #+BEGIN_SRC java
+        module MyFlowConfiguration implements DataFlow::ConfigSig {
+          predicate isSource(DataFlow::Node source) {
+            ...
+          }
+
+          predicate isSink(DataFlow::Node sink) {
+            ...
+          }
+        }
+
+        module MyFlow = TaintTracking::Global<MyFlowConfiguration>;
+
+        from DataFlow::Node source, DataFlow::Node sink
+        where MyFlow::flow(source, sink)
+        select source, "Dataflow to $@.", sink, sink.toString()
+      #+END_SRC
+
+      Note the different CodeQL classes used here and their connections: =Node=,
+      =ExprNode=, =ParameterNode= are part of the DFG (data flow graph), =Expr= and
+      =Parameter= are part of the AST (abstract syntax tree).  Here, this means
+      using
+      : source.asExpr() = call
+      for the source and
+      : sink.asExpr() = queryArg
+      for the sink.
+
+   4. Also, note that we want the flow path.  So the query changes from
+      : * @kind problem
+      to
+      : * @kind path-problem
+      There are other changes, see [[./SqlInjection-flow-with-path.ql]]
+
+   5. Try this with dataflow instead of taintflow, and notice that there are no
+      results. 
+      
+
+
