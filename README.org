@@ -252,6 +252,8 @@
       for the source and
       : sink.asExpr() = queryArg
       for the sink.
+      
+      For the completed query, see [[./SqlInjection-flow-no-path.ql]]
 
    4. Also, note that we want the flow path.  So the query changes from
       : * @kind problem
