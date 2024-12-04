@@ -123,7 +123,7 @@
     
   #+END_SRC
 
-* Build CodeQL Database
+* NEXT Build CodeQL Database
    To get started, build the codeql database (adjust paths to your setup).  
 
    The bash version
@@ -197,36 +197,20 @@
 
    #+END_SRC
    
-* TODO Optional: Multiple Builds
-  #+BEGIN_SRC sh 
-    dotnet sln codeql-intro-csharp.sln list
-    dotnet build codeql-intro-csharp.sln
-  #+END_SRC
-
-* TODO CodeQL for Devops and Administrators
-  - https://docs.github.com/en/code-security/codeql-cli/codeql-cli-manual
-  - https://github.com/hohn/codeql-visual-guides/blob/master/codeql-system.drawio.pdf
-  - https://htmlpreview.github.io/?https://github.com/hohn/codeql-cli-end-to-end/blob/master/doc/readme.html
-  - https://github.com/hohn/codeql-workshop-sql-injection-java
-    + https://github.com/hohn/codeql-workshop-sql-injection-java/blob/master/src/README.org
-  - [[file:~/local/codeql-dataflow-II-cpp/README.org::*Prerequisites and setup instructions][Prerequisites and setup instructions]]
-  - picking queries via query suites
-    - /Users/hohn/local/codeql-workshops-staging/java/codeql-java-workshop-notes.md
-    - /Users/hohn/local/codeql-cli-end-to-end/doc/readme.md
-    - /Users/hohn/local/codeql-cli-end-to-end/sarif-cli/non-sarif-metadata/README.org
-
-* TODO CodeQL for Query Writers
+* CodeQL for Query Writers
 ** Identify the problem
-   =./add-user= is reading from =STDIN=, and writing to a database; looking at the code in
-   [[./add-user.c]] leads to
-   : count = read(STDIN_FILENO, buf, BUFSIZE - 1);
+   =./SqliDemo/bin/Debug/net9.0/SqliDemo= is reading from =STDIN=, and writing to
+   a database; looking at the code in 
+   [[./SqliDemo/Injectable.cs]]
+   leads to
+   : Console.ReadLine()
    for the read and 
-   : rc = sqlite3_exec(db, query, NULL, 0, &zErrMsg);
+   : new SqliteCommand(query, connection)
    for the write.
 
-   This problem is thus a dataflow problem; in codeql terminology we have
-   - a /source/ at the =read(STDIN_FILENO, buf, BUFSIZE - 1);=
-   - a /sink/ at the =sqlite3_exec(db, query, NULL, 0, &zErrMsg);=
+   This problem is thus a dataflow or taintflow problem; in codeql terminology we have
+   - a /source/ at the =Console.ReadLine()=
+   - a /sink/ at the =new SqliteCommand(query, connection)=
 
    We write codeql to identify these two, and then connect them via
    - a /dataflow configuration/ -- for this problem, the more general /taintflow
@@ -288,6 +272,23 @@
 
    5. Try this with dataflow instead of taintflow, and notice that there are no
       results. 
-      
+
+* TODO CodeQL for Devops and Administrators
+  - https://docs.github.com/en/code-security/codeql-cli/codeql-cli-manual
+  - https://github.com/hohn/codeql-visual-guides/blob/master/codeql-system.drawio.pdf
+  - https://htmlpreview.github.io/?https://github.com/hohn/codeql-cli-end-to-end/blob/master/doc/readme.html
+  - https://github.com/hohn/codeql-workshop-sql-injection-java
+    + https://github.com/hohn/codeql-workshop-sql-injection-java/blob/master/src/README.org
+  - [[file:~/local/codeql-dataflow-II-cpp/README.org::*Prerequisites and setup instructions][Prerequisites and setup instructions]]
+  - picking queries via query suites
+    - /Users/hohn/local/codeql-workshops-staging/java/codeql-java-workshop-notes.md
+    - /Users/hohn/local/codeql-cli-end-to-end/doc/readme.md
+    - /Users/hohn/local/codeql-cli-end-to-end/sarif-cli/non-sarif-metadata/README.org
 
 
+* TODO Optional: Multiple Builds
+  #+BEGIN_SRC sh 
+    dotnet sln codeql-intro-csharp.sln list
+    dotnet build codeql-intro-csharp.sln
+  #+END_SRC
+   
