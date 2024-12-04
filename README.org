@@ -80,38 +80,6 @@
     # Parse error near line 2: no such table: users
   #+END_SRC
 
-* SQL Injection Code Sample Run
-  #+BEGIN_SRC sh
-    # All run in pwsh, typical prompt is
-    # PS /Users/hohn/work-gh/codeql-intro-csharp> 
-
-    # Build
-    cd $HOME/work-gh/codeql-intro-csharp
-    ./build.ps1
-
-    # Prepare db
-    ./admin.ps1 -r
-    ./admin.ps1 -c
-    ./admin.ps1 -s
-
-    # Add regular user interactively
-    ./build.ps1
-    ./SqliDemo/bin/Debug/net9.0/SqliDemo
-    hello user
-
-    # Check
-    ./admin.ps1 -s
-
-    # Add Johnny Droptable 
-    ./SqliDemo/bin/Debug/net9.0/SqliDemo
-    Johnny'); DROP TABLE users; --
-
-    # And the problem:
-    ./admin.ps1 -s
-    Parse error near line 1: no such table: users
-    
-  #+END_SRC
-
 * NEXT Build CodeQL Database
    To get started, build the codeql database (adjust paths to your setup).  
 
@@ -187,6 +155,38 @@
    #+END_SRC
    
 * CodeQL for Query Writers
+** SQL Injection Code Sample Run
+   #+BEGIN_SRC sh
+     # All run in pwsh, typical prompt is
+     # PS /Users/hohn/work-gh/codeql-intro-csharp> 
+
+     # Build
+     cd $HOME/work-gh/codeql-intro-csharp
+     ./build.ps1
+
+     # Prepare db
+     ./admin.ps1 -r
+     ./admin.ps1 -c
+     ./admin.ps1 -s
+
+     # Add regular user interactively
+     ./build.ps1
+     ./SqliDemo/bin/Debug/net9.0/SqliDemo
+     hello user
+
+     # Check
+     ./admin.ps1 -s
+
+     # Add Johnny Droptable 
+     ./SqliDemo/bin/Debug/net9.0/SqliDemo
+     Johnny'); DROP TABLE users; --
+
+     # And the problem:
+     ./admin.ps1 -s
+     Parse error near line 1: no such table: users
+
+   #+END_SRC
+
 ** Identify the problem
    =./SqliDemo/bin/Debug/net9.0/SqliDemo= is reading from =STDIN=, and writing to
    a database; looking at the code in 
