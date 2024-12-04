@@ -269,10 +269,43 @@
   - https://github.com/hohn/codeql-workshop-sql-injection-java
     + https://github.com/hohn/codeql-workshop-sql-injection-java/blob/master/src/README.org
   - [[file:~/local/codeql-dataflow-II-cpp/README.org::*Prerequisites and setup instructions][Prerequisites and setup instructions]]
-  - picking queries via query suites
+
+  - [ ] picking queries 
     - /Users/hohn/local/codeql-workshops-staging/java/codeql-java-workshop-notes.md
     - /Users/hohn/local/codeql-cli-end-to-end/doc/readme.md
     - /Users/hohn/local/codeql-cli-end-to-end/sarif-cli/non-sarif-metadata/README.org
+** codeql packs
+   https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs
+
+   #+BEGIN_SRC sh 
+     # Create a pack 
+     cd ~/work-gh/codeql-intro-csharp
+     codeql pack create -- .
+     # output in 
+     ls .codeql/pack/workshop/csharp-sql-injection/0.0.1/
+
+     # Compile and Bundle
+     cd ~/work-gh/codeql-intro-csharp
+     codeql pack bundle                                      \
+            -o csharp-sql-injection-pack.tgz                 \
+            -- .
+
+     # Get help via 
+     codeql pack create -h
+     codeql pack publish -h
+
+   #+END_SRC
+   Note the warning for =FindFunction.ql=.  This will cause failures later in the
+   pipeline. 
+   #+BEGIN_SRC text
+     WARNING: The @id property should be a valid query identifier. (/Users/hohn/work-gh/codeql-intro-csharp/.codeql/pack/workshop/csharp-sql-injection/0.0.1/FindFunction.ql:1,1-7,4) 
+   #+END_SRC
+   At the end, note
+   #+BEGIN_SRC text
+     Query pack creation complete.
+     Contents directory: /Users/hohn/work-gh/codeql-intro-csharp/.codeql/pack/workshop/csharp-sql-injection/0.0.1
+   #+END_SRC
+
 
 * TODO Optional: Multiple Builds
   #+BEGIN_SRC sh 
