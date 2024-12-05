@@ -80,10 +80,10 @@
     # Parse error near line 2: no such table: users
   #+END_SRC
 
-* NEXT Build CodeQL Database
+* Build CodeQL Database
    To get started, build the codeql database (adjust paths to your setup).  
 
-   The bash version
+** Build CodeQL Database with bash
    #+BEGIN_SRC sh
      # Build the db with source commit id.
      cd $HOME/work-gh/codeql-intro-csharp
@@ -100,9 +100,32 @@
      # Successfully created database at /Users/hohn/work-gh/codeql-intro-csharp/csharp-sqli-c89fbf8.
    #+END_SRC
 
-* NEXT Run analysis using given script and database
+** Build CodeQL Database with pwsh
+   #+BEGIN_SRC sh 
+     # Set the working directory
+     Set-Location -Path "$HOME/work-gh/codeql-intro-csharp"
 
-   The bash version
+     # Get the current directory
+     $SRCDIR = Get-Location
+
+     # Build the database name using the current Git commit ID
+     $CommitId = git rev-parse --short HEAD
+     $DB = "$SRCDIR/csharp-sqli-$CommitId"
+
+     # Prepare the database directory
+     Write-Host "Preparing database directory $DB"
+     if (Test-Path -Path $DB) {
+         Remove-Item -Recurse -Force -Path $DB
+     }
+     New-Item -ItemType Directory -Path $DB | Out-Null
+
+     # Run the build under CodeQL
+     Write-Host "Running CodeQL database creation..."
+     & codeql database create --language=csharp -s . -j 8 -v $DB --command="pwsh ./build.ps1"
+   #+END_SRC
+
+* Run analysis using given script and database
+** The bash version
    #+BEGIN_SRC sh
      # The setup information from before
      echo $DB
@@ -130,10 +153,43 @@
      edit csharp-sqli.sarif
    #+END_SRC
 
+** The pwsh version
+   #+BEGIN_SRC sh 
+     # The setup information from before
+     Write-Host $DB
+     Write-Host $SRCDIR
+
+     # To see the help for CodeQL database analyze
+     codeql database analyze -h
+
+     # Run a query
+     & codeql database analyze `
+         -v `
+         --ram=14000 `
+         -j12 `
+         --rerun `
+         --format=sarif-latest `
+         --output csharp-sqli.sarif `
+         -- `
+         $DB `
+         "$SRCDIR/FindFunction.ql"
+
+     # Optional: pretty-print the output
+     jq '.' csharp-sqli.sarif | Set-Content -Path csharp-sqli.sarif
+
+     # Examine the file in an editor
+     edit csharp-sqli.sarif
+   #+END_SRC
+
+** Common to All Shells
    An example of using the sarif data is in the the jq script [[./sarif-summary.jq]].
    When run against the sarif input via 
    #+BEGIN_SRC sh
+     # bash
      jq --raw-output --join-output  -f sarif-summary.jq < csharp-sqli.sarif > csharp-sqli.txt
+
+     # pwsh
+     jq --raw-output --join-output -f sarif-summary.jq csharp-sqli.sarif > csharp-sqli.txt
    #+END_SRC
    it produces output in a form close to that of compiler error messages:
    #+BEGIN_SRC text
@@ -151,7 +207,6 @@
              SqliDemo/Injectable.cs:22:
      csharp/intro/FindFunction: Method found [0 more]
              SqliDemo/Injectable.cs:47:
-
    #+END_SRC
    
 * CodeQL for Query Writers
