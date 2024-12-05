@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="generator" content=
+          "HTML Tidy for HTML5 for Apple macOS version 5.8.0">
+    <meta charset="UTF-8">
+
+    <title>C# Syntax to CodeQL Mapping</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+
+<body>
+    <h1>C# Syntax to CodeQL Mapping</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>C# Syntax Element</th>
+                <th>C# Sample Code</th>
+                <th>CodeQL Class</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>File</td>
+                <td>N/A</td>
+                <td>File</td>
+            </tr>
+            <tr>
+                <td>Source File</td>
+                <td>N/A</td>
+                <td>SourceFile</td>
+            </tr>
+            <tr>
+                <td>Directory</td>
+                <td>N/A</td>
+                <td>Folder</td>
+            </tr>
+            <tr>
+                <td>Class</td>
+                <td>class MyClass { }</td>
+                <td>Class</td>
+            </tr>
+            <tr>
+                <td>Struct</td>
+                <td>struct MyStruct { int x; }</td>
+                <td>Struct</td>
+            </tr>
+            <tr>
+                <td>Interface</td>
+                <td>interface IMyInterface { void DoWork(); }</td>
+                <td>Interface</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+    
+
+
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th><strong>C# Syntax Element</strong></th>
+          <th><strong>C# Sample Code</strong></th>
+          <th><strong>CodeQL Class</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Files and Directories</strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>File</td>
+          <td>N/A</td>
+          <td><code>File</code></td>
+        </tr>
+        <tr>
+          <td>Source File</td>
+          <td>N/A</td>
+          <td><code>SourceFile</code></td>
+        </tr>
+        <tr>
+          <td>Directory</td>
+          <td>N/A</td>
+          <td><code>Folder</code></td>
+        </tr>
+        <tr>
+          <td><strong>Types</strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Class</td>
+          <td><code>class MyClass { }</code></td>
+          <td><code>Class</code></td>
+        </tr>
+        <tr>
+          <td>Struct</td>
+          <td><code>struct MyStruct { int x; }</code></td>
+          <td><code>Struct</code></td>
+        </tr>
+        <tr>
+          <td>Interface</td>
+          <td><code>interface IMyInterface { void DoWork(); }</code></td>
+          <td><code>Interface</code></td>
+        </tr>
+        <tr>
+          <td>Enum</td>
+          <td><code>enum MyEnum { A, B, C }</code></td>
+          <td><code>Enum</code></td>
+        </tr>
+        <tr>
+          <td>Delegate</td>
+          <td><code>delegate void MyDelegate(string s);</code></td>
+          <td><code>Delegate</code></td>
+        </tr>
+        <tr>
+          <td><strong>Methods and Functions</strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Method</td>
+          <td><code>void MyMethod() { }</code></td>
+          <td><code>Method</code></td>
+        </tr>
+        <tr>
+          <td>Constructor</td>
+          <td><code>MyClass() { }</code></td>
+          <td><code>Constructor</code></td>
+        </tr>
+        <tr>
+          <td>Destructor</td>
+          <td><code>~MyClass() { }</code></td>
+          <td><code>Destructor</code></td>
+        </tr>
+        <tr>
+          <td>Operator</td>
+          <td><code>public static MyClass operator +(MyClass a)</code></td>
+          <td><code>Operator</code></td>
+        </tr>
+        <tr>
+          <td>Local Function</td>
+          <td><code>void LocalFunc() { }</code></td>
+          <td><code>LocalFunction</code></td>
+        </tr>
+        <tr>
+          <td><strong>Variables and Parameters</strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Variable</td>
+          <td><code>int x = 10;</code></td>
+          <td><code>Variable</code></td>
+        </tr>
+        <tr>
+          <td>Local Variable</td>
+          <td><code>int localVar = 20;</code></td>
+          <td><code>LocalVariable</code></td>
+        </tr>
+        <tr>
+          <td>Parameter</td>
+          <td><code>void MyMethod(int param) { }</code></td>
+          <td><code>Parameter</code></td>
+        </tr>
+        <tr>
+          <td>Field</td>
+          <td><code>private int myField;</code></td>
+          <td><code>Field</code></td>
+        </tr>
+        <tr>
+          <td><strong>Statements</strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Block Statement</td>
+          <td><code>{ int x = 5; }</code></td>
+          <td><code>BlockStmt</code></td>
+        </tr>
+        <tr>
+          <td>If Statement</td>
+          <td><code>if (x &gt; 0) { }</code></td>
+          <td><code>IfStmt</code></td>
+        </tr>
+        <tr>
+          <td>For Statement</td>
+          <td><code>for (int i = 0; i &lt; 10; i++) { }</code></td>
+          <td><code>ForStmt</code></td>
+        </tr>
+        <tr>
+          <td>Foreach Statement</td>
+          <td><code>foreach (var item in items) { }</code></td>
+          <td><code>ForEachStmt</code></td>
+        </tr>
+        <tr>
+          <td>While Statement</td>
+          <td><code>while (x &gt; 0) { }</code></td>
+          <td><code>WhileStmt</code></td>
+        </tr>
+        <tr>
+          <td>Do-While Statement</td>
+          <td><code>do { } while (x &gt; 0);</code></td>
+          <td><code>DoStmt</code></td>
+        </tr>
+        <tr>
+          <td>Switch Statement</td>
+          <td><code>switch (x) { case 1: break; }</code></td>
+          <td><code>SwitchStmt</code></td>
+        </tr>
+        <tr>
+          <td>Break Statement</td>
+          <td><code>break;</code></td>
+          <td><code>BreakStmt</code></td>
+        </tr>
+        <tr>
+          <td>Continue Statement</td>
+          <td><code>continue;</code></td>
+          <td><code>ContinueStmt</code></td>
+        </tr>
+        <tr>
+          <td>Return Statement</td>
+          <td><code>return x;</code></td>
+          <td><code>ReturnStmt</code></td>
+        </tr>
+        <tr>
+          <td>Throw Statement</td>
+          <td><code>throw new Exception();</code></td>
+          <td><code>ThrowStmt</code></td>
+        </tr>
+        <tr>
+          <td>Try Statement</td>
+          <td><code>try { } catch { }</code></td>
+          <td><code>TryStmt</code></td>
+        </tr>
+        <tr>
+          <td>Catch Clause</td>
+          <td><code>catch (Exception ex) { }</code></td>
+          <td><code>CatchClause</code></td>
+        </tr>
+        <tr>
+          <td>Finally Clause</td>
+          <td><code>finally { }</code></td>
+          <td><code>FinallyClause</code></td>
+        </tr>
+        <tr>
+          <td>Using Statement</td>
+          <td><code>using (var res = new Resource()) { }</code></td>
+          <td><code>UsingStmt</code></td>
+        </tr>
+        <tr>
+          <td>Lock Statement</td>
+          <td><code>lock (obj) { }</code></td>
+          <td><code>LockStmt</code></td>
+        </tr>
+        <tr>
+          <td><strong>Expressions</strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Expression</td>
+          <td><code>x + y</code></td>
+          <td><code>Expr</code></td>
+        </tr>
+        <tr>
+          <td>Literal Expression</td>
+          <td><code>42</code></td>
+          <td><code>Literal</code></td>
+        </tr>
+        <tr>
+          <td>Binary Operation</td>
+          <td><code>x + y</code></td>
+          <td><code>BinaryOperation</code></td>
+        </tr>
+        <tr>
+          <td>Unary Operation</td>
+          <td><code>-x</code></td>
+          <td><code>UnaryOperation</code></td>
+        </tr>
+        <tr>
+          <td>Assignment Expression</td>
+          <td><code>x = 5</code></td>
+          <td><code>AssignExpr</code></td>
+        </tr>
+        <tr>
+          <td>Invocation Expression</td>
+          <td><code>Console.WriteLine("Hello");</code></td>
+          <td><code>InvocationExpr</code></td>
+        </tr>
+        <tr>
+          <td>Object Creation Expression</td>
+          <td><code>new MyClass()</code></td>
+          <td><code>ObjectCreation</code></td>
+        </tr>
+        <tr>
+          <td>Array Creation Expression</td>
+          <td><code>new int[10]</code></td>
+          <td><code>ArrayCreation</code></td>
+        </tr>
+        <tr>
+          <td>Cast Expression</td>
+          <td><code>(int)x</code></td>
+          <td><code>CastExpr</code></td>
+        </tr>
+        <tr>
+          <td>Conditional Expression</td>
+          <td><code>x &gt; 0 ? y : z</code></td>
+          <td><code>ConditionalExpr</code></td>
+        </tr>
+        <tr>
+          <td>Lambda Expression</td>
+          <td><code>(x) =&gt; x * 2</code></td>
+          <td><code>LambdaExpr</code></td>
+        </tr>
+        <tr>
+          <td><strong>Accessors and Properties</strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Property</td>
+          <td><code>public int MyProp { get; set; }</code></td>
+          <td><code>Property</code></td>
+        </tr>
+        <tr>
+          <td>Property Access</td>
+          <td><code>x = MyProp;</code></td>
+          <td><code>PropertyAccess</code></td>
+        </tr>
+        <tr>
+          <td>Indexer</td>
+          <td><code>this[int index]</code></td>
+          <td><code>Indexer</code></td>
+        </tr>
+        <tr>
+          <td>Indexer Access</td>
+          <td><code>array[0]</code></td>
+          <td><code>IndexerAccess</code></td>
+        </tr>
+        <tr>
+          <td><strong>Events</strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Event</td>
+          <td><code>public event EventHandler MyEvent;</code></td>
+          <td><code>Event</code></td>
+        </tr>
+        <tr>
+          <td>Event Access</td>
+          <td><code>MyEvent += handler;</code></td>
+          <td><code>EventAccess</code></td>
+        </tr>
+        <tr>
+          <td><strong>Attributes</strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Attribute</td>
+          <td><code>[Obsolete("Message")]</code></td>
+          <td><code>Attribute</code></td>
+        </tr>
+        <tr>
+          <td><strong>Namespaces</strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Namespace</td>
+          <td><code>namespace MyNamespace { }</code></td>
+          <td><code>Namespace</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
